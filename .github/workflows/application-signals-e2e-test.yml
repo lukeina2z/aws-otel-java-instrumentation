@@ -31,7 +31,7 @@ jobs:
           role-to-assume: arn:aws:iam::${{ secrets.APPLICATION_SIGNALS_E2E_TEST_ACCOUNT_ID }}:role/${{ secrets.APPLICATION_SIGNALS_E2E_TEST_ROLE_NAME }}
           aws-region: us-east-1
 
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: aws-opentelemetry-agent.jar
 
@@ -219,3 +219,10 @@ jobs:
       adot-image-name: ${{ inputs.adot-image-name }}
       caller-workflow-name: 'main-build'
       java-version: '11'
+
+  java-lambda-test:
+    uses: aws-observability/aws-application-signals-test-framework/.github/workflows/java-lambda-test.yml@main
+    secrets: inherit
+    with:
+      aws-region: us-east-1
+      caller-workflow-name: 'main-build'

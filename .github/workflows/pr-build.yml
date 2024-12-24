@@ -63,6 +63,13 @@ jobs:
 
       - uses: gradle/wrapper-validation-action@v1
 
+      # Cleanup directories before proceeding with setup
+      - name: Clean up old installations
+        if: ${{ matrix.os != 'windows-latest' }}
+        run: |
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /usr/share/dotnet
+
         # cache local patch outputs
       - name: Cache local Maven repository
         uses: actions/cache@v3
@@ -149,3 +156,18 @@ jobs:
           arguments: build --stacktrace -PenableCoverage=true
       - uses: codecov/codecov-action@v3
 
+  build-lambda:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo @ SHA - ${{ github.sha }}
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: temurin
+
+      - name: Build layer
+        working-directory: lambda-layer
+        run: ./build-layer.sh
