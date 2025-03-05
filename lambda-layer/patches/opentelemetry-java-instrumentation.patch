@@ -170,10 +170,10 @@ index 0000000000..c37eab3256
 +}
 diff --git a/instrumentation/aws-lambda/aws-lambda-core-1.0/library/src/test/java/io/opentelemetry/instrumentation/awslambdacore/v1_0/internal/ParentContextExtractorTest.java b/instrumentation/aws-lambda/aws-lambda-core-1.0/library/src/test/java/io/opentelemetry/instrumentation/awslambdacore/v1_0/internal/ParentContextExtractorTest.java
 new file mode 100644
-index 0000000000..5553ae6cb8
+index 0000000000..86ff752815
 --- /dev/null
 +++ b/instrumentation/aws-lambda/aws-lambda-core-1.0/library/src/test/java/io/opentelemetry/instrumentation/awslambdacore/v1_0/internal/ParentContextExtractorTest.java
-@@ -0,0 +1,135 @@
+@@ -0,0 +1,134 @@
 +/*
 + * Copyright The OpenTelemetry Authors
 + * SPDX-License-Identifier: Apache-2.0
@@ -196,7 +196,6 @@ index 0000000000..5553ae6cb8
 +import uk.org.webcompere.systemstubs.environment.EnvironmentVariables;
 +import uk.org.webcompere.systemstubs.jupiter.SystemStub;
 +import uk.org.webcompere.systemstubs.jupiter.SystemStubsExtension;
-+import uk.org.webcompere.systemstubs.properties.SystemProperties;
 +
 +/**
 + * This class is internal and is hence not for public use. Its APIs are unstable and can change at
