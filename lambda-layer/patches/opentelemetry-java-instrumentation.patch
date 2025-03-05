@@ -1,5 +1,5 @@
 diff --git a/instrumentation/aws-lambda/aws-lambda-core-1.0/library/src/main/java/io/opentelemetry/instrumentation/awslambdacore/v1_0/internal/ApiGatewayProxyRequest.java b/instrumentation/aws-lambda/aws-lambda-core-1.0/library/src/main/java/io/opentelemetry/instrumentation/awslambdacore/v1_0/internal/ApiGatewayProxyRequest.java
-index a96fa5e3f9..df5bcec438 100644
+index 1582ee649e..7e130bd49e 100644
 --- a/instrumentation/aws-lambda/aws-lambda-core-1.0/library/src/main/java/io/opentelemetry/instrumentation/awslambdacore/v1_0/internal/ApiGatewayProxyRequest.java
 +++ b/instrumentation/aws-lambda/aws-lambda-core-1.0/library/src/main/java/io/opentelemetry/instrumentation/awslambdacore/v1_0/internal/ApiGatewayProxyRequest.java
 @@ -30,7 +30,14 @@ public abstract class ApiGatewayProxyRequest {
@@ -73,7 +73,7 @@ index 9341bf6f79..dbbcb1c99d 100644
  }
 diff --git a/instrumentation/aws-lambda/aws-lambda-core-1.0/library/src/main/java/io/opentelemetry/instrumentation/awslambdacore/v1_0/internal/ParentContextExtractor.java b/instrumentation/aws-lambda/aws-lambda-core-1.0/library/src/main/java/io/opentelemetry/instrumentation/awslambdacore/v1_0/internal/ParentContextExtractor.java
 new file mode 100644
-index 0000000000..72d4f9253b
+index 0000000000..c37eab3256
 --- /dev/null
 +++ b/instrumentation/aws-lambda/aws-lambda-core-1.0/library/src/main/java/io/opentelemetry/instrumentation/awslambdacore/v1_0/internal/ParentContextExtractor.java
 @@ -0,0 +1,91 @@
@@ -170,7 +170,7 @@ index 0000000000..72d4f9253b
 +}
 diff --git a/instrumentation/aws-lambda/aws-lambda-core-1.0/library/src/test/java/io/opentelemetry/instrumentation/awslambdacore/v1_0/internal/ParentContextExtractorTest.java b/instrumentation/aws-lambda/aws-lambda-core-1.0/library/src/test/java/io/opentelemetry/instrumentation/awslambdacore/v1_0/internal/ParentContextExtractorTest.java
 new file mode 100644
-index 0000000000..1fa0b6e536
+index 0000000000..5553ae6cb8
 --- /dev/null
 +++ b/instrumentation/aws-lambda/aws-lambda-core-1.0/library/src/test/java/io/opentelemetry/instrumentation/awslambdacore/v1_0/internal/ParentContextExtractorTest.java
 @@ -0,0 +1,135 @@
