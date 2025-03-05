@@ -16,7 +16,7 @@ index 1582ee649e..7e130bd49e 100644
 +        && ParentContextExtractor.AWS_TRACE_HEADER_PROPAGATOR_KEY.equalsIgnoreCase(
 +            fields.iterator().next());
    }
-
+ 
    public static ApiGatewayProxyRequest forStream(InputStream source) {
 diff --git a/instrumentation/aws-lambda/aws-lambda-core-1.0/library/src/main/java/io/opentelemetry/instrumentation/awslambdacore/v1_0/internal/AwsLambdaFunctionInstrumenter.java b/instrumentation/aws-lambda/aws-lambda-core-1.0/library/src/main/java/io/opentelemetry/instrumentation/awslambdacore/v1_0/internal/AwsLambdaFunctionInstrumenter.java
 index 9341bf6f79..dbbcb1c99d 100644
@@ -325,10 +325,10 @@ index 305e3e62a0..844ee31899 100644
 -import java.util.Locale;
 -import java.util.Map;
 +import io.opentelemetry.instrumentation.awslambdacore.v1_0.internal.ParentContextExtractor;
-
+ 
  class SqsMessageSpanLinksExtractor implements SpanLinksExtractor<SQSMessage> {
    private static final String AWS_TRACE_HEADER_SQS_ATTRIBUTE_KEY = "AWSTraceHeader";
-
+ 
 -  // lower-case map getter used for extraction
 -  static final String AWS_TRACE_HEADER_PROPAGATOR_KEY = "x-amzn-trace-id";
 -
