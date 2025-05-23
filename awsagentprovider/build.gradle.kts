@@ -36,8 +36,10 @@ dependencies {
   implementation("io.opentelemetry.contrib:opentelemetry-aws-xray")
   // AWS Resource Detectors
   implementation("io.opentelemetry.contrib:opentelemetry-aws-resources")
-  // Json file reader
+  // JSON file reader
   implementation("com.fasterxml.jackson.core:jackson-databind:2.16.1")
+  // YAML file reader
+  implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.16.1")
   // Import AWS SDK v1 core for ARN parsing utilities
   implementation("com.amazonaws:aws-java-sdk-core:1.12.773")
   // Export configuration
@@ -45,7 +47,8 @@ dependencies {
   // For Udp emitter
   compileOnly("io.opentelemetry:opentelemetry-exporter-otlp-common")
 
-  // For OtlpAwsSpanExporter SigV4 Authentication
+  // For OtlpAwsExporter SigV4 Authentication
+  runtimeOnly("software.amazon.awssdk:sts")
   implementation("software.amazon.awssdk:auth")
   implementation("software.amazon.awssdk:http-auth-aws")
 

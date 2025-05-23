@@ -23,7 +23,7 @@ plugins {
 }
 
 group = "software.amazon.distro.opentelemetry"
-version = "0.1.0"
+version = "1.0.0"
 
 dependencies {
   implementation(platform("io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom:2.10.0"))
@@ -101,8 +101,8 @@ tasks.create("printVersion") {
 nexusPublishing {
   repositories {
     sonatype {
-      nexusUrl.set(uri("https://aws.oss.sonatype.org/service/local/"))
-      snapshotRepositoryUrl.set(uri("https://aws.oss.sonatype.org/content/repositories/snapshots/"))
+      nexusUrl.set(uri("https://ossrh-staging-api.central.sonatype.com/service/local/"))
+      snapshotRepositoryUrl.set(uri("https://central.sonatype.com/repository/maven-snapshots/"))
       username.set(System.getenv("PUBLISH_TOKEN_USERNAME"))
       password.set(System.getenv("PUBLISH_TOKEN_PASSWORD"))
     }
