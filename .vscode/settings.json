@@ -1,0 +1,18 @@
+{
+    "java.configuration.updateBuildConfiguration": "interactive",
+    "java.compile.nullAnalysis.mode": "disabled",
+    "java.configuration.runtimes": [
+        {
+            "name": "JavaSE-21",
+            "path": "/Library/Java/JavaVirtualMachines/amazon-corretto-21.jdk/Contents/Home",
+            "default": true
+        }
+    ],
+    "java.test.config": {
+        "vmArgs": ["-XX:+EnableDynamicAgentLoading"],
+        "env": {},
+        "workingDirectory": "${workspaceFolder}"
+    },
+    "java.jdt.ls.java.home": "/Library/Java/JavaVirtualMachines/amazon-corretto-21.jdk/Contents/Home",
+    "java.debug.settings.onBuildFailureProceed": true
+}
