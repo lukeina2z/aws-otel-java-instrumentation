@@ -1,0 +1,40 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Launch Spring Boot JAR (no build)",
+            "request": "launch",
+            "mainClass": "org.springframework.boot.loader.JarLauncher",
+            "args": "",
+            // Do not let VS Code build the project. The JAR must be produced externally by ./gradlew build.
+            "classPaths": [
+                "${workspaceFolder}/sample-apps/springboot/build/libs/springboot-2.18.0-SNAPSHOT.jar"
+            ],
+            // Note: do NOT set a JDWP agent here if VS Code will launch the JVM with debugging enabled,
+            // otherwise the JDWP agent will be loaded twice and the JVM will fail to start.
+            "console": "integratedTerminal",
+            // Optional: set the java executable to your local JDK 21 if needed. If unset, VS Code default JDK is used.
+            "javaExec": "/Library/Java/JavaVirtualMachines/amazon-corretto-21.jdk/Contents/Home/bin/java",
+            "stopOnEntry": false
+        },
+        {
+            // non-suspending
+            // java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 \
+            // -jar sample-apps/springboot/build/libs/springboot-2.18.0-SNAPSHOT.jar
+
+            // suspend
+            // java -agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:5005 \
+            // -jar sample-apps/springboot/build/libs/springboot-2.18.0-SNAPSHOT.jar
+            "type": "java",
+            "name": "Attach to Spring Boot (remote)",
+            "request": "attach",
+            "hostName": "127.0.0.1",
+            "port": 5005,
+            "projectName": "sample-apps-springboot"
+        }
+    ]
+}
