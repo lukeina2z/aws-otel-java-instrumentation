@@ -1,5 +1,8 @@
 #!/bin/bash
 set -e
+set -x
+
+# read -p "Press Enter to continue... Let's start."
 
 SOURCEDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
@@ -14,6 +17,10 @@ if [[ -z "$version" ]]; then
   echo "Error: Version could not be found in ${file}."
   exit 1
 fi
+
+#echo "Original version: $version"
+#echo "Modified version: $new_version"
+#read -p "Press Enter to continue... Create OTel Java Agent repo."
 
 
 ## Clone and Patch the OpenTelemetry Java Instrumentation Repository
@@ -30,9 +37,14 @@ patch -p1 < "$SOURCEDIR"/patches/opentelemetry-java-instrumentation.patch
 
 patch -p1 < "$SOURCEDIR"/patches/StreamHandlerInstrumentation.patch
 
+patch -p1 < "$SOURCEDIR"/patches/xyz99bld.patch
+
 ./gradlew publishToMavenLocal
 popd
-rm -rf opentelemetry-java-instrumentation
+### rm -rf opentelemetry-java-instrumentation
+
+# read -p "Press Enter to continue... Create OTel Java Contrib repo. "
+
 
 contrib_version=$(awk -F'=v' '/OTEL_JAVA_CONTRIB_VERSION/ {print $2}' "$file")
 if [[ -n "$contrib_version" ]]; then
@@ -48,8 +60,12 @@ if [[ -n "$contrib_version" ]]; then
 
   ./gradlew publishToMavenLocal
   popd
-  rm -rf opentelemetry-java-contrib
+###  rm -rf opentelemetry-java-contrib
 fi
+
+# read -p "Press Enter to continue... Going to patch ADOT"
+
+version="${version%.*}.99"
 
 ## Build the ADOT Java from current source
 echo "Info: Building ADOT Java from current source"
@@ -58,11 +74,13 @@ patch  -p1 < "${SOURCEDIR}"/patches/aws-otel-java-instrumentation.patch
 CI=false ./gradlew publishToMavenLocal -Prelease.version=${version}-adot-lambda1
 popd
 
+# read -p "Press Enter to continue to build ADOT Lambda Java"
 
 ## Build ADOT Lambda Java SDK Layer Code
 echo "Info: Building ADOT Lambda Java SDK Layer Code"
 ./gradlew build -PotelVersion=${version}
 
+# read -p "Copy ADOT Lambda Java"
 
 ## Copy ADOT Java Agent downloaded using Gradle task and bundle it with the Lambda handler script
 echo "Info: Creating the layer artifact"
@@ -72,6 +90,8 @@ cp otel-instrument "$SOURCEDIR"/build/distributions/otel-instrument
 pushd "$SOURCEDIR"/build/distributions
 zip -r aws-opentelemetry-java-layer.zip aws-opentelemetry-javaagent.jar otel-instrument
 popd
+
+# read -p "Clean up work !!!"
 
 ## Cleanup
 # revert the patch applied since it is only needed while building the layer.
