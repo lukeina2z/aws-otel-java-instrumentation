@@ -26,8 +26,9 @@ base {
 
 dependencies {
   compileOnly("io.opentelemetry.javaagent:opentelemetry-javaagent-extension-api")
-  compileOnly("io.opentelemetry.semconv:opentelemetry-semconv:1.28.0-alpha")
-  testImplementation("io.opentelemetry.semconv:opentelemetry-semconv:1.28.0-alpha")
+  compileOnly("io.opentelemetry.semconv:opentelemetry-semconv:1.34.0")
+  compileOnly("io.opentelemetry.semconv:opentelemetry-semconv-incubating:1.34.0-alpha")
+  testImplementation("io.opentelemetry.semconv:opentelemetry-semconv:1.34.0")
   compileOnly("com.google.errorprone:error_prone_annotations:2.19.1")
   compileOnly("io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi")
   compileOnly("org.slf4j:slf4j-api")
