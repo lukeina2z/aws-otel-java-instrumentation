@@ -15,8 +15,8 @@
 
 package software.amazon.opentelemetry.javaagent.providers;
 
-import static io.opentelemetry.semconv.SemanticAttributes.MESSAGING_OPERATION;
-import static io.opentelemetry.semconv.SemanticAttributes.MessagingOperationValues.PROCESS;
+import static io.opentelemetry.semconv.incubating.MessagingIncubatingAttributes.MESSAGING_OPERATION;
+import static io.opentelemetry.semconv.incubating.MessagingIncubatingAttributes.MessagingOperationTypeIncubatingValues.PROCESS;
 import static io.opentelemetry.semconv.SemanticAttributes.RPC_SYSTEM;
 import static org.assertj.core.api.Assertions.assertThat;
 

@@ -15,36 +15,65 @@
 
 package software.amazon.opentelemetry.javaagent.providers;
 
-import static io.opentelemetry.semconv.SemanticAttributes.DB_CONNECTION_STRING;
-import static io.opentelemetry.semconv.SemanticAttributes.DB_NAME;
-import static io.opentelemetry.semconv.SemanticAttributes.DB_OPERATION;
-import static io.opentelemetry.semconv.SemanticAttributes.DB_STATEMENT;
-import static io.opentelemetry.semconv.SemanticAttributes.DB_SYSTEM;
-import static io.opentelemetry.semconv.SemanticAttributes.DB_USER;
-import static io.opentelemetry.semconv.SemanticAttributes.FAAS_INVOKED_NAME;
-import static io.opentelemetry.semconv.SemanticAttributes.FAAS_TRIGGER;
-import static io.opentelemetry.semconv.SemanticAttributes.GRAPHQL_OPERATION_TYPE;
-import static io.opentelemetry.semconv.SemanticAttributes.HTTP_METHOD;
-import static io.opentelemetry.semconv.SemanticAttributes.HTTP_REQUEST_METHOD;
-import static io.opentelemetry.semconv.SemanticAttributes.HTTP_RESPONSE_STATUS_CODE;
-import static io.opentelemetry.semconv.SemanticAttributes.HTTP_STATUS_CODE;
-import static io.opentelemetry.semconv.SemanticAttributes.HTTP_URL;
-import static io.opentelemetry.semconv.SemanticAttributes.MESSAGING_OPERATION;
-import static io.opentelemetry.semconv.SemanticAttributes.MESSAGING_SYSTEM;
-import static io.opentelemetry.semconv.SemanticAttributes.NETWORK_PEER_ADDRESS;
-import static io.opentelemetry.semconv.SemanticAttributes.NETWORK_PEER_PORT;
-import static io.opentelemetry.semconv.SemanticAttributes.NET_PEER_NAME;
-import static io.opentelemetry.semconv.SemanticAttributes.NET_PEER_PORT;
-import static io.opentelemetry.semconv.SemanticAttributes.NET_SOCK_PEER_ADDR;
-import static io.opentelemetry.semconv.SemanticAttributes.NET_SOCK_PEER_PORT;
-import static io.opentelemetry.semconv.SemanticAttributes.PEER_SERVICE;
-import static io.opentelemetry.semconv.SemanticAttributes.RPC_METHOD;
-import static io.opentelemetry.semconv.SemanticAttributes.RPC_SERVICE;
-import static io.opentelemetry.semconv.SemanticAttributes.SERVER_ADDRESS;
-import static io.opentelemetry.semconv.SemanticAttributes.SERVER_PORT;
-import static io.opentelemetry.semconv.SemanticAttributes.SERVER_SOCKET_ADDRESS;
-import static io.opentelemetry.semconv.SemanticAttributes.SERVER_SOCKET_PORT;
-import static io.opentelemetry.semconv.SemanticAttributes.URL_FULL;
+// https://github.com/open-telemetry/semantic-conventions-java/blob/release/v1.34.0/semconv-incubating/src/main/java/io/opentelemetry/semconv/incubating/DbIncubatingAttributes.java
+// https://github.com/open-telemetry/semantic-conventions-java/blob/release/v1.34.0/semconv/src/main/java/io/opentelemetry/semconv/DbAttributes.java
+// Deprecated, use {@code server.address}, {@code server.port} attributes instead.
+import static io.opentelemetry.semconv.incubating.DbIncubatingAttributes.DB_CONNECTION_STRING;
+// Deprecated, use {@code db.namespace} instead.
+import static io.opentelemetry.semconv.incubating.DbIncubatingAttributes.DB_NAME;
+// Deprecated, use {@code db.operation.name} instead.
+import static io.opentelemetry.semconv.incubating.DbIncubatingAttributes.DB_OPERATION;
+// @deprecated Replaced by {@code db.query.text}.
+import static io.opentelemetry.semconv.incubating.DbIncubatingAttributes.DB_STATEMENT;
+// Deprecated, use {@code db.system.name} instead.
+import static io.opentelemetry.semconv.incubating.DbIncubatingAttributes.DB_SYSTEM;
+// Deprecated, no replacement at this time.
+import static io.opentelemetry.semconv.incubating.DbIncubatingAttributes.DB_USER;
+
+import static io.opentelemetry.semconv.incubating.FaasIncubatingAttributes.FAAS_INVOKED_NAME;
+import static io.opentelemetry.semconv.incubating.FaasIncubatingAttributes.FAAS_TRIGGER;
+import static io.opentelemetry.semconv.incubating.GraphqlIncubatingAttributes.GRAPHQL_OPERATION_TYPE;
+import static io.opentelemetry.semconv.incubating.HttpIncubatingAttributes.HTTP_METHOD;
+import static io.opentelemetry.semconv.HttpAttributes.HTTP_REQUEST_METHOD;
+import static io.opentelemetry.semconv.HttpAttributes.HTTP_RESPONSE_STATUS_CODE;
+import static io.opentelemetry.semconv.incubating.HttpIncubatingAttributes.HTTP_STATUS_CODE;
+import static io.opentelemetry.semconv.incubating.HttpIncubatingAttributes.HTTP_URL;
+import static io.opentelemetry.semconv.UrlAttributes.URL_FULL;
+
+// https://github.com/open-telemetry/semantic-conventions-java/blob/release/v1.34.0/semconv-incubating/src/main/java/io/opentelemetry/semconv/incubating/MessagingIncubatingAttributes.java
+// Deprecated, use {@code messaging.operation.type} instead.
+import static io.opentelemetry.semconv.incubating.MessagingIncubatingAttributes.MESSAGING_OPERATION;
+import static io.opentelemetry.semconv.incubating.MessagingIncubatingAttributes.MESSAGING_SYSTEM;
+
+// https://github.com/open-telemetry/semantic-conventions-java/blob/release/v1.34.0/semconv-incubating/src/main/java/io/opentelemetry/semconv/incubating/NetIncubatingAttributes.java
+import static io.opentelemetry.semconv.NetworkAttributes.NETWORK_PEER_ADDRESS;
+import static io.opentelemetry.semconv.NetworkAttributes.NETWORK_PEER_PORT;
+// Deprecated, use {@code server.address} on client spans and {@code client.address} on serverspans.
+import static io.opentelemetry.semconv.incubating.NetIncubatingAttributes.NET_PEER_NAME;
+// Deprecated, use {@code server.port} on client spans and {@code client.port} on server spans.
+import static io.opentelemetry.semconv.incubating.NetIncubatingAttributes.NET_PEER_PORT;
+// Deprecated, use {@code network.peer.address}.
+import static io.opentelemetry.semconv.incubating.NetIncubatingAttributes.NET_SOCK_PEER_ADDR;
+// Deprecated, use {@code network.peer.port}.
+import static io.opentelemetry.semconv.incubating.NetIncubatingAttributes.NET_SOCK_PEER_PORT;
+
+import static io.opentelemetry.semconv.incubating.PeerIncubatingAttributes.PEER_SERVICE;
+import static io.opentelemetry.semconv.incubating.RpcIncubatingAttributes.RPC_METHOD;
+import static io.opentelemetry.semconv.incubating.RpcIncubatingAttributes.RPC_SERVICE;
+import static io.opentelemetry.semconv.ServerAttributes.SERVER_ADDRESS;
+import static io.opentelemetry.semconv.ServerAttributes.SERVER_PORT;
+
+// https://github.com/open-telemetry/semantic-conventions-java/blob/release/v1.28.0/semconv/src/main/java/io/opentelemetry/semconv/SemanticAttributes.java
+//  * @deprecated This item has been renamed in 1.22.0 of the semantic conventions. Use {@link
+//  *     SemanticAttributes#NETWORK_LOCAL_ADDRESS} on server telemetry and {@link
+//  *     SemanticAttributes#NETWORK_PEER_ADDRESS} on client telemetry instead.
+// import static io.opentelemetry.semconv.SemanticAttributes.SERVER_SOCKET_ADDRESS;
+
+//  * @deprecated This item has been renamed in 1.22.0 of the semantic conventions. Use {@link
+//  *     SemanticAttributes#NETWORK_LOCAL_PORT} on server telemetry and {@link
+//  *     SemanticAttributes#NETWORK_PEER_PORT} on client telemetry instead.
+// import static io.opentelemetry.semconv.SemanticAttributes.SERVER_SOCKET_PORT;
+
 import static software.amazon.opentelemetry.javaagent.providers.AwsApplicationSignalsCustomizerProvider.LAMBDA_APPLICATION_SIGNALS_REMOTE_ENVIRONMENT;
 import static software.amazon.opentelemetry.javaagent.providers.AwsAttributeKeys.AWS_AGENT_ID;
 import static software.amazon.opentelemetry.javaagent.providers.AwsAttributeKeys.AWS_AUTH_ACCESS_KEY;
@@ -99,8 +128,6 @@ import io.opentelemetry.sdk.resources.Resource;
 import io.opentelemetry.sdk.trace.data.EventData;
 import io.opentelemetry.sdk.trace.data.ExceptionEventData;
 import io.opentelemetry.sdk.trace.data.SpanData;
-import io.opentelemetry.semconv.ResourceAttributes;
-import io.opentelemetry.semconv.SemanticAttributes;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -126,6 +153,12 @@ import javax.annotation.Nullable;
  * represent "outgoing" traffic, and {@link SpanKind#INTERNAL} spans are ignored.
  */
 final class AwsMetricAttributeGenerator implements MetricAttributeGenerator {
+
+  private static final AttributeKey<String> SERVER_SOCKET_ADDRESS =
+      io.opentelemetry.api.common.AttributeKey.stringKey("server.socket.address");
+
+  private static final AttributeKey<Long> SERVER_SOCKET_PORT = 
+      io.opentelemetry.api.common.AttributeKey.longKey("server.socket.port");
 
   private static final Logger logger =
       Logger.getLogger(AwsMetricAttributeGenerator.class.getName());
