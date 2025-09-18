@@ -3,8 +3,26 @@ locals {
   architecture = var.architecture == "x86_64" ? "amd64" : "arm64"
 }
 
+# Always cleanup existing resources before creating new ones
+resource "null_resource" "cleanup" {
+  provisioner "local-exec" {
+    command = <<-EOT
+      aws lambda delete-function --function-name ${var.function_name} 2>/dev/null || true
+      for api_id in $(aws apigateway get-rest-apis --query "items[?name=='${var.api_gateway_name}'].id" --output text); do
+        aws apigateway delete-rest-api --rest-api-id $api_id 2>/dev/null || true
+      done
+      aws iam detach-role-policy --role-name lambda_execution_role --policy-arn arn:aws:iam::$(aws sts get-caller-identity --query Account --output text):policy/S3ListBucketsPolicy 2>/dev/null || true
+      aws iam delete-policy --policy-arn arn:aws:iam::$(aws sts get-caller-identity --query Account --output text):policy/S3ListBucketsPolicy 2>/dev/null || true
+      aws iam detach-role-policy --role-name lambda_execution_role --policy-arn arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole 2>/dev/null || true
+      aws iam detach-role-policy --role-name lambda_execution_role --policy-arn arn:aws:iam::aws:policy/AWSXRayDaemonWriteAccess 2>/dev/null || true
+      aws iam delete-role --role-name lambda_execution_role 2>/dev/null || true
+    EOT
+  }
+}
+
 resource "aws_iam_role" "lambda_role" {
   name               = "lambda_execution_role"
+  depends_on         = [null_resource.cleanup]
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
     Statement = [{
@@ -18,6 +36,7 @@ resource "aws_iam_role" "lambda_role" {
 resource "aws_iam_policy" "s3_access" {
   name        = "S3ListBucketsPolicy"
   description = "Allow Lambda to list buckets"
+  depends_on  = [null_resource.cleanup]
   policy      = jsonencode({
     Version = "2012-10-17",
     Statement = [{
@@ -45,6 +64,7 @@ resource "aws_iam_role_policy_attachment" "attach_xray_policy" {
 
 resource "aws_lambda_function" "sampleLambdaFunction" {
   function_name    = var.function_name
+  depends_on       = [null_resource.cleanup]
   runtime          = var.runtime
   timeout          = 300
   handler          = "com.amazon.sampleapp.LambdaHandler::handleRequest"
@@ -66,7 +86,8 @@ resource "aws_lambda_function" "sampleLambdaFunction" {
 
 ### API Gateway proxy to Lambda function
 resource "aws_api_gateway_rest_api" "apigw_lambda_api" {
-  name = var.api_gateway_name
+  name       = var.api_gateway_name
+  depends_on = [null_resource.cleanup]
 }
 
 resource "aws_api_gateway_resource" "apigw_lambda_resource" {
