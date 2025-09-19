@@ -42,7 +42,7 @@ java {
 }
 
 dependencies {
-  implementation("org.springframework.boot:spring-boot-starter-web:2.7.17")
+  implementation("org.springframework.boot:spring-boot-dependencies:2.7.17")
 }
 
 jib {
