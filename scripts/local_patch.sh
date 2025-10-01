@@ -29,7 +29,7 @@ if [[ -f "$OTEL_JAVA_PATCH" ]]; then
   cd -
 
   echo "Cleaning up opentelemetry-java"
-  rm -rf opentelemetry-java
+  # rm -rf opentelemetry-java
 else
   echo "Skiping patching opentelemetry-java"
 fi
@@ -53,7 +53,7 @@ if [[ -f "$OTEL_JAVA_CONTRIB_PATCH" ]]; then
   cd -
 
   echo "Cleaning up opentelemetry-java-contrib"
-  rm -rf opentelemetry-java-contrib
+  # rm -rf opentelemetry-java-contrib
 else
   echo "Skipping patching opentelemetry-java-contrib"
 fi
@@ -77,7 +77,7 @@ if [[ -f "$OTEL_JAVA_INSTRUMENTATION_PATCH" ]]; then
   cd -
 
   echo "Cleaning up opentelemetry-java-instrumentation"
-  rm -rf opentelemetry-java-instrumentation
+  # rm -rf opentelemetry-java-instrumentation
 else
   echo "Skipping patching opentelemetry-java-instrumentation"
 fi
