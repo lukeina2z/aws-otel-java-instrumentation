@@ -19,13 +19,34 @@
             "console": "integratedTerminal",
             // Optional: set the java executable to your local JDK 21 if needed. If unset, VS Code default JDK is used.
             "javaExec": "/Library/Java/JavaVirtualMachines/amazon-corretto-21.jdk/Contents/Home/bin/java",
-            "stopOnEntry": false
+            "stopOnEntry": false,
+            "env": {
+                "OTEL_RESOURCE_ATTRIBUTES": "service.name=ADOT-Java-lkmain",
+                "JAVA_TOOL_OPTIONS": " -javaagent:./otelagent/build/libs/aws-opentelemetry-agent-2.18.0-SNAPSHOT.jar",
+                // "AWS_LAMBDA_FUNCTION_NAME": "Great-Lambda-Fn-XXX",
+                "OTEL_JAVAAGENT_DEBUG": "true",
+                "OTEL_LOG_LEVEL": "debug",
+                "OTEL_METRICS_EXPORTER": "none",
+                // "OTEL_LOGS_EXPORTER": "none",
+                // "OTEL_EXPORTER_OTLP_ENDPOINT": "http://localhost:4318",
+                "OTEL_EXPORTER_OTLP_TRACES_ENDPOINT": "http://127.0.0.1:4318/v1/traces",
+                // "OTEL_METRIC_EXPORT_INTERVAL": "2000",
+                // "OTEL_EXPORTER_OTLP_PROTOCOL": "http/json",
+                "OTEL_EXPORTER_OTLP_PROTOCOL": "http/protobuf",
+                "OTEL_TRACES_SAMPLER": "always_on",
+                "OTEL_TRACES_SAMPLER_ARG": "endpoint=http://localhost:2000",
+                "OTEL_AWS_APPLICATION_SIGNALS_ENABLED": "true",
+                "OTEL_AWS_APPLICATION_SIGNALS_EXPORTER_ENDPOINT": "http://localhost:4316/v1/metrics",
+                // "OTEL_INSTRUMENTATION_COMMON_DEFAULT_ENABLED": "true",
+                // "OTEL_INSTRUMENTATION_SERVLET_ENABLED": "true",
+                // "OTEL_INSTRUMENTATION_TOMCAT_ENABLED": "true",
+            },
+            "cwd": "${workspaceFolder}",
         },
         {
             // non-suspending
             // java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 \
             // -jar sample-apps/springboot/build/libs/springboot-2.18.0-SNAPSHOT.jar
-
             // suspend
             // java -agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:5005 \
             // -jar sample-apps/springboot/build/libs/springboot-2.18.0-SNAPSHOT.jar
