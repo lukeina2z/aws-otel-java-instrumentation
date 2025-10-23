@@ -12,7 +12,7 @@
             "args": "",
             // Do not let VS Code build the project. The JAR must be produced externally by ./gradlew build.
             "classPaths": [
-                "${workspaceFolder}/sample-apps/springboot/build/libs/springboot-2.18.0-SNAPSHOT.jar"
+                "${workspaceFolder}/sample-apps/springboot/build/libs/springboot-2.21.0-SNAPSHOT.jar"
             ],
             // Note: do NOT set a JDWP agent here if VS Code will launch the JVM with debugging enabled,
             // otherwise the JDWP agent will be loaded twice and the JVM will fail to start.
