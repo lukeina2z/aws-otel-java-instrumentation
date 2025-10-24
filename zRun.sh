@@ -2,6 +2,9 @@
 
 # ./gradlew :otelagent:dependencies > z-dep-2025-10-22.txt
 
+# ./gradlew :awsagentprovider:dependencies > z-dep-awsagentprovider-2.20.1.txt
+
+
 
 # ./scripts/local_patch.sh
 ./gradlew clean
